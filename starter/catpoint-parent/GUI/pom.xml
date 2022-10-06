@@ -9,13 +9,13 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>Security</artifactId>
+    <artifactId>GUI</artifactId>
     <packaging>jar</packaging>
-    <name>Security Module</name>
+    <name>GUI Module</name>
     <dependencies>
         <dependency>
             <groupId>com.udacity.catpoint</groupId>
-            <artifactId>Image</artifactId>
+            <artifactId>Security</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
