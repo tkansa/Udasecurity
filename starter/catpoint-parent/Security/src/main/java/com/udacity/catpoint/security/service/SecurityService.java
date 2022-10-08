@@ -113,6 +113,10 @@ public class SecurityService {
      * @param active
      */
     public void changeSensorActivationStatus(Sensor sensor, Boolean active) {
+        // added this for test #5
+        if(sensor.getActive() && active && this.getAlarmStatus() == AlarmStatus.PENDING_ALARM){
+            handleSensorActivated();
+        }
         if(!sensor.getActive() && active) {
             handleSensorActivated();
         } else if (sensor.getActive() && !active) {
