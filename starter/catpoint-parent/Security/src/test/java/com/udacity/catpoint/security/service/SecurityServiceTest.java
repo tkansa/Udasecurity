@@ -82,7 +82,7 @@ public class SecurityServiceTest {
     // 3. If pending alarm and all sensors are inactive, return to no alarm state.
     @Test
     void ifPendingAlarmAndAllSensorsInactive_SystemIsPutInNoAlarmState(){
-        when(securityService.getAlarmStatus()).thenReturn(AlarmStatus.ALARM);
+        when(securityService.getAlarmStatus()).thenReturn(AlarmStatus.PENDING_ALARM);
         Set<Sensor> sensors = new HashSet<>();
         Sensor inactiveSensor = new Sensor("Window", SensorType.DOOR);
         inactiveSensor.setActive(false);
