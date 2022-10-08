@@ -1,6 +1,5 @@
 package com.udacity.catpoint.security.service;
 
-import com.udacity.catpoint.image.service.FakeImageService;
 import com.udacity.catpoint.image.service.IImageService;
 import com.udacity.catpoint.security.data.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,8 +9,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import software.amazon.awssdk.thirdparty.jackson.core.JsonEncoding;
 
+import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -102,6 +102,7 @@ public class SecurityServiceTest {
 
     // 4. If alarm is active, change in sensor state should not affect the alarm state.
     @Test
+
     public void ifAlarmIsActiveChangeInSensorStateShouldNotAffectAlarmState() {
         when(securityRepository.getAlarmStatus()).thenReturn(AlarmStatus.ALARM);
         Set<Sensor> sensors = new HashSet<>();
@@ -150,6 +151,23 @@ public class SecurityServiceTest {
 
         // assert that the alarm status hasn't changed
         assertEquals(expectedAlarmStatus, actualAlarmStatus);
+    }
+
+    // 7. If the image service identifies an image containing a cat while the system is armed-home, put the system into alarm status.
+    @Test
+    public void ifImageServiceIDsCatWhileArmedHome_PutTheSystemIntoAlarmState() {
+        // make a cat
+        BufferedImage cat = new BufferedImage(4, 4, 4);
+        // set the system to ARMED_HOME
+        when(securityRepository.getArmingStatus()).thenReturn(ArmingStatus.ARMED_HOME);
+
+        // make it detect a cat
+        when(imageService.imageContainsCat(cat, 50F)).thenReturn(true);
+
+        // call the method
+        securityService.processImage(cat);
+        
+        verify(securityRepository, times(1)).setAlarmStatus(AlarmStatus.ALARM);
     }
 
 }
