@@ -151,12 +151,14 @@ public class SecurityServiceTest {
 
         // assert that the alarm status hasn't changed
         assertEquals(expectedAlarmStatus, actualAlarmStatus);
+
+        verify(securityRepository, never()).setAlarmStatus(any(AlarmStatus.class));
     }
 
     // 7. If the image service identifies an image containing a cat while the system is armed-home, put the system into alarm status.
     @Test
     public void ifImageServiceIDsCatWhileArmedHome_PutTheSystemIntoAlarmState() {
-        // make a cat
+        // make a cat image
         BufferedImage cat = new BufferedImage(4, 4, 4);
         // set the system to ARMED_HOME
         when(securityRepository.getArmingStatus()).thenReturn(ArmingStatus.ARMED_HOME);
@@ -166,8 +168,60 @@ public class SecurityServiceTest {
 
         // call the method
         securityService.processImage(cat);
-        
+
         verify(securityRepository, times(1)).setAlarmStatus(AlarmStatus.ALARM);
     }
+
+    // 8. If the image service identifies an image that does not contain a cat,
+    // change the status to no alarm as long as the sensors are not active.
+    @Test
+    public void ifImageWithNoCatDetected_ifNoSensorIsActiveChangeStatusToNoAlarm(){
+        sensor.setActive(false);
+        // make a dog image
+        BufferedImage dog = new BufferedImage(4, 4, 4);
+        // set the alarm
+        //when(securityRepository.getAlarmStatus()).thenReturn(AlarmStatus.PENDING_ALARM);
+
+        // make it detect a non-cat
+        when(imageService.imageContainsCat(dog, 50F)).thenReturn(false);
+
+        // call the method
+        securityService.processImage(dog);
+
+        verify(securityRepository, times(1)).setAlarmStatus(AlarmStatus.NO_ALARM);
+
+    }
+
+    // 9. If the system is disarmed, set the status to no alarm.
+    @Test
+    public void ifSystemDisarmed_setStatusToNoAlarm() {
+        // call the method
+        securityService.setArmingStatus(ArmingStatus.DISARMED);
+
+        verify(securityRepository, times(1)).setAlarmStatus(AlarmStatus.NO_ALARM);
+    }
+
+    // 10. If the system is armed, reset all sensors to inactive.
+    @ParameterizedTest //tests 10
+    @EnumSource(value = ArmingStatus.class, names = {"ARMED_AWAY", "ARMED_HOME"})
+    public void ifSystemIsArmed_resetAllSensorsToInactive(ArmingStatus armingStatus){
+
+        // make some active sensors
+        Set<Sensor> sensors = new HashSet<>();
+        Sensor windowSensor = new Sensor("Window", SensorType.WINDOW);
+        windowSensor.setActive(true);
+        Sensor doorSensor =  new Sensor("Door", SensorType.DOOR);
+        doorSensor.setActive(true);
+        sensors.add(windowSensor);
+        sensors.add(doorSensor);
+
+        // call the method
+        securityService.setArmingStatus(armingStatus);
+
+        assertEquals(false, windowSensor.getActive());
+
+    }
+
+    // 11. If the system is armed-home while the camera shows a cat, set the alarm status to alarm.
 
 }
