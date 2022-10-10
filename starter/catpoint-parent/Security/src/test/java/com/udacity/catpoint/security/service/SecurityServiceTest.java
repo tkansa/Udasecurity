@@ -52,11 +52,6 @@ public class SecurityServiceTest {
         securityService.changeSensorActivationStatus(sensor, true);
 
         // verify that setAlarmStatus to PENDING_ALARM was invoked on the security repo
-        // shouldn't calling getAlarmStatus after activating a sensor return PENDING_ALARM?
-        // but this test fails
-        // assertEquals(AlarmStatus.PENDING_ALARM, securityService.getAlarmStatus());
-        // and this one passes. The fact that setAlarmStatus to pending was invoked
-        // shouldn't the above test pass also then?
         verify(securityRepository, times(1)).setAlarmStatus(AlarmStatus.PENDING_ALARM);
 
     }
@@ -215,13 +210,34 @@ public class SecurityServiceTest {
         sensors.add(windowSensor);
         sensors.add(doorSensor);
 
+        // add the sensors
+        when(securityRepository.getSensors()).thenReturn(sensors);
+
         // call the method
         securityService.setArmingStatus(armingStatus);
 
         assertEquals(false, windowSensor.getActive());
+        assertEquals(false, doorSensor.getActive());
 
     }
 
     // 11. If the system is armed-home while the camera shows a cat, set the alarm status to alarm.
+    @ParameterizedTest //tests 10
+    @EnumSource(value = ArmingStatus.class, names = {"ARMED_AWAY", "DISARMED"})
+    public void ifTheSystemIsArmedHomeWhileCameraShowsCat_setAlarmToALARM(ArmingStatus armingStatus){
+
+        when(securityRepository.getArmingStatus()).thenReturn(armingStatus);
+        // make a cat image
+        BufferedImage cat = new BufferedImage(4, 4, 4);
+        // make it detect a cat
+        when(imageService.imageContainsCat(cat, 50F)).thenReturn(true);
+        securityService.processImage(cat);
+
+        // set arming status to ARMED_HOME
+        securityService.setArmingStatus(ArmingStatus.ARMED_HOME);
+
+        verify(securityRepository, times(1)).setAlarmStatus(AlarmStatus.ALARM);
+
+    }
 
 }

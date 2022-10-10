@@ -27,6 +27,8 @@ public class SecurityService {
     private SecurityRepository securityRepository;
     private Set<StatusListener> statusListeners = new HashSet<>();
 
+    private boolean catDetected;
+
     public SecurityService(SecurityRepository securityRepository, IImageService imageService) {
         this.securityRepository = securityRepository;
         this.imageService = imageService;
@@ -45,6 +47,18 @@ public class SecurityService {
         if(armingStatus == ArmingStatus.DISARMED) {
             setAlarmStatus(AlarmStatus.NO_ALARM);
         }
+        // added for test #11
+        if(armingStatus == ArmingStatus.ARMED_HOME && catDetected){
+            setAlarmStatus(AlarmStatus.ALARM);
+        }
+        // added for test #10
+        if(armingStatus == ArmingStatus.ARMED_HOME || armingStatus == ArmingStatus.ARMED_AWAY){
+            Set<Sensor> sensors = securityRepository.getSensors();
+            for(Sensor sensor : sensors){
+                sensor.setActive(false);
+                securityRepository.updateSensor(sensor);
+            }
+        }
         securityRepository.setArmingStatus(armingStatus);
     }
 
@@ -54,6 +68,7 @@ public class SecurityService {
      * @param cat True if a cat is detected, otherwise false.
      */
     private void catDetected(Boolean cat) {
+        catDetected = cat;
         if(cat && getArmingStatus() == ArmingStatus.ARMED_HOME) {
             setAlarmStatus(AlarmStatus.ALARM);
         } else {
@@ -106,6 +121,7 @@ public class SecurityService {
             // case ALARM -> setAlarmStatus(AlarmStatus.PENDING_ALARM); // changed this for test 4
         }
     }
+
 
     /**
      * Change the activation status for the specified sensor and update alarm status if necessary.
