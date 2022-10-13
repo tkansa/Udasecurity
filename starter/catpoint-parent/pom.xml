@@ -25,7 +25,7 @@
 
   <dependencies>
     <!-- add your dependencies here! -->
-    <dependency>
+    <!--<dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-junit-jupiter</artifactId>
       <version>3.6.28</version>
@@ -48,42 +48,42 @@
       <artifactId>junit-jupiter-params</artifactId>
       <version>5.8.1</version>
       <scope>test</scope>
-    </dependency>
+    </dependency>-->
     <!-- https://mvnrepository.com/artifact/com.miglayout/miglayout -->
-    <dependency>
+  <!--  <dependency>
       <groupId>com.miglayout</groupId>
       <artifactId>miglayout</artifactId>
       <version>3.7.4</version>
-    </dependency>
-    <dependency>
+    </dependency>-->
+    <!--<dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
       <version>27.0-jre</version>
-    </dependency>
+    </dependency>-->
     <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
-    <dependency>
+    <!--<dependency>
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
       <version>2.9.1</version>
-    </dependency>
+    </dependency>-->
     <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
-    <dependency>
+   <!-- <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
       <version>2.0.3</version>
-    </dependency>
+    </dependency>-->
     <!-- https://mvnrepository.com/artifact/software.amazon.awssdk/auth -->
-    <dependency>
+    <!--<dependency>
       <groupId>software.amazon.awssdk</groupId>
       <artifactId>auth</artifactId>
       <version>2.17.285</version>
-    </dependency>
+    </dependency>-->
     <!-- https://mvnrepository.com/artifact/software.amazon.awssdk/rekognition -->
-    <dependency>
+   <!-- <dependency>
       <groupId>software.amazon.awssdk</groupId>
       <artifactId>rekognition</artifactId>
       <version>2.17.285</version>
-    </dependency>
+    </dependency>-->
   </dependencies>
 
   <build>
