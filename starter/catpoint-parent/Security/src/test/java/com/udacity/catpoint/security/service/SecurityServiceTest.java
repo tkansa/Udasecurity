@@ -11,7 +11,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.awt.image.BufferedImage;
-import java.io.BufferedWriter;
 import java.util.HashSet;
 import java.util.Set;
 

@@ -9,7 +9,9 @@ import com.udacity.catpoint.security.data.Sensor;
 import com.udacity.catpoint.image.service.FakeImageService;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 
@@ -54,16 +56,27 @@ public class SecurityService {
         }
         // added for test #10
         if(armingStatus == ArmingStatus.ARMED_HOME || armingStatus == ArmingStatus.ARMED_AWAY){
-            //Set<Sensor> sensors = securityRepository.getSensors();
+            Set<Sensor> sensors = securityRepository.getSensors();
             // can't modify in for-each loop
             /*for(Sensor sensor : sensors){
                 sensor.setActive(false);
                 securityRepository.updateSensor(sensor);
             }*/
             // need to use ConcurrentSkipListSet ?
-            ConcurrentSkipListSet<Sensor> sensors = new ConcurrentSkipListSet<>(getSensors());
+            // reviewer said to clase to another sstudent's solution
+            /*ConcurrentSkipListSet<Sensor> sensors = new ConcurrentSkipListSet<>(getSensors());
             sensors.forEach(sensor -> sensor.setActive(false));
-            sensors.forEach(sensor -> securityRepository.updateSensor(sensor));
+            sensors.forEach(sensor -> securityRepository.updateSensor(sensor));*/
+
+            // Cast the set to an arrayList
+            List<Sensor> sensorList = new ArrayList<>();
+            for(Sensor sensor: sensors){
+                sensorList.add(sensor);
+            }
+
+            for(int i = 0; i < sensorList.size(); i ++){
+                sensorList.get(i).setActive(false);
+            }
 
         }
         securityRepository.setArmingStatus(armingStatus);
