@@ -38,6 +38,8 @@ public class SecurityServiceTest {
     }
 
     // 1. If alarm is armed and a sensor becomes activated, put the system into pending alarm status.
+
+    // As demoed in class by the instructor
     @ParameterizedTest
     @EnumSource(value = ArmingStatus.class, names = { "ARMED_HOME", "ARMED_AWAY"})
     void ifAlarmIsArmedAndSensorActivated_systemIsPutInPendingAlarmStatus(ArmingStatus armingStatus){
@@ -56,6 +58,7 @@ public class SecurityServiceTest {
     }
 
     // 2. If alarm is armed and a sensor becomes activated and the system is already pending alarm, set the alarm status to alarm.
+    // As demoed in class by the instructor
     @ParameterizedTest
     @EnumSource(value = ArmingStatus.class, names = { "ARMED_HOME", "ARMED_AWAY"})
     void ifAlarmIsArmedAndSystemIsPendingAlarmAndSystemIsActivated_SystemIsPutInAlarmStatus(ArmingStatus armingStatus){
@@ -128,6 +131,7 @@ public class SecurityServiceTest {
     }
 
     // 6. If a sensor is deactivated while already inactive, make no changes to the alarm state.
+    // As demoed in class by the instructor
     @ParameterizedTest
     @EnumSource(value = AlarmStatus.class, names = {"NO_ALARM", "PENDING_ALARM", "ALARM"})
     public void ifASensorIsDeactivatedWhileAlreadyInactive_MakeNoChangesToAlarmState(AlarmStatus expectedAlarmStatus) {

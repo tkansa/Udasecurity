@@ -63,7 +63,7 @@ public class SecurityService {
                 securityRepository.updateSensor(sensor);
             }*/
             // need to use ConcurrentSkipListSet ?
-            // reviewer said to clase to another sstudent's solution
+            // reviewer said to close to another student's solution
             /*ConcurrentSkipListSet<Sensor> sensors = new ConcurrentSkipListSet<>(getSensors());
             sensors.forEach(sensor -> sensor.setActive(false));
             sensors.forEach(sensor -> securityRepository.updateSensor(sensor));*/
