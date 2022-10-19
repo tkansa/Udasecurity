@@ -81,6 +81,17 @@ public class PretendDatabaseSecurityRepositoryImpl implements SecurityRepository
     }
 
     @Override
+    public void resetSensors() {
+        int numSensors = sensors.size();
+        sensors.clear();
+        for(int i = 0; i < numSensors; i++){
+            Sensor sensor = new Sensor("blah", SensorType.DOOR);
+            sensor.setActive(false);
+            sensors.add(sensor);
+        }
+    }
+
+    @Override
     public AlarmStatus getAlarmStatus() {
         return alarmStatus;
     }

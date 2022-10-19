@@ -56,28 +56,7 @@ public class SecurityService {
         }
         // added for test #10
         if(armingStatus == ArmingStatus.ARMED_HOME || armingStatus == ArmingStatus.ARMED_AWAY){
-            Set<Sensor> sensors = securityRepository.getSensors();
-            // can't modify in for-each loop
-            /*for(Sensor sensor : sensors){
-                sensor.setActive(false);
-                securityRepository.updateSensor(sensor);
-            }*/
-            // need to use ConcurrentSkipListSet ?
-            // reviewer said to close to another student's solution
-            /*ConcurrentSkipListSet<Sensor> sensors = new ConcurrentSkipListSet<>(getSensors());
-            sensors.forEach(sensor -> sensor.setActive(false));
-            sensors.forEach(sensor -> securityRepository.updateSensor(sensor));*/
-
-            // Cast the set to an arrayList
-            List<Sensor> sensorList = new ArrayList<>();
-            for(Sensor sensor: sensors){
-                sensorList.add(sensor);
-            }
-
-            for(int i = 0; i < sensorList.size(); i ++){
-                sensorList.get(i).setActive(false);
-            }
-
+          getSensors().stream().sorted().forEach(s -> s.setActive(false));
         }
         securityRepository.setArmingStatus(armingStatus);
     }
