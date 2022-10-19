@@ -57,6 +57,7 @@ public class SecurityService {
         // added for test #10
         if(armingStatus == ArmingStatus.ARMED_HOME || armingStatus == ArmingStatus.ARMED_AWAY){
           getSensors().stream().sorted().forEach(s -> s.setActive(false));
+          securityRepository.resetSensors();
         }
         securityRepository.setArmingStatus(armingStatus);
     }

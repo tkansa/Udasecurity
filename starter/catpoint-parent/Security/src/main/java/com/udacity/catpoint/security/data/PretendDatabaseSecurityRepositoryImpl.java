@@ -4,8 +4,10 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.UUID;
 import java.util.prefs.Preferences;
 
 /**
@@ -80,13 +82,23 @@ public class PretendDatabaseSecurityRepositoryImpl implements SecurityRepository
         return sensors;
     }
 
+
+
     @Override
     public void resetSensors() {
         int numSensors = sensors.size();
+        ArrayList<UUID> ids = new ArrayList<>();
+        ArrayList<String> names = new ArrayList<>();
+        ArrayList<SensorType> types = new ArrayList<>();
+        for(Sensor sensor : sensors){
+            ids.add(sensor.getSensorId());
+            names.add(sensor.getName());
+            types.add(sensor.getSensorType());
+        }
         sensors.clear();
         for(int i = 0; i < numSensors; i++){
-            Sensor sensor = new Sensor("blah", SensorType.DOOR);
-            sensor.setActive(false);
+            Sensor sensor = new Sensor(names.get(i), types.get(i), ids.get(i));
+            //sensor.setActive(false);
             sensors.add(sensor);
         }
     }

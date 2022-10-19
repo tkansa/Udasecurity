@@ -22,6 +22,13 @@ public class Sensor implements Comparable<Sensor> {
         this.active = Boolean.FALSE;
     }
 
+    public Sensor(String name, SensorType sensorType, UUID uuid) {
+        this.name = name;
+        this.sensorType = sensorType;
+        this.sensorId = uuid;
+        this.active = Boolean.FALSE;
+    }
+
     public Sensor(){}
 
     @Override
