@@ -9,10 +9,7 @@ import com.udacity.catpoint.security.data.Sensor;
 import com.udacity.catpoint.image.service.FakeImageService;
 
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 /**
@@ -56,8 +53,20 @@ public class SecurityService {
         }
         // added for test #10
         if(armingStatus == ArmingStatus.ARMED_HOME || armingStatus == ArmingStatus.ARMED_AWAY){
-          getSensors().stream().sorted().forEach(s -> s.setActive(false));
-          securityRepository.resetSensors();
+            Set<Sensor> sensors = getSensors();
+            sensors.stream().sorted().forEach(s -> s.setActive(false));
+
+            ArrayList<Sensor> sensorList = new ArrayList<>();
+
+            for(Sensor s: sensors){
+               sensorList.add(s);
+            }
+
+            for(Sensor s : sensorList){
+                securityRepository.updateSensor(s);
+            }
+            statusListeners.forEach(sl -> sl.sensorStatusChanged());
+
         }
         securityRepository.setArmingStatus(armingStatus);
     }
